@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 
 const messages = [
-  "Happy Birthday, Bubbu! 🎂",
+  "Happy Birthday, Ayushiiii! 🎂",
   "Our bond in three words — Sweet, Loyal & My cutiepie 💎",
   "The vibe between us? Sweet & Warm ☀️"
 ];

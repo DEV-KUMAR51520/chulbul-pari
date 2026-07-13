@@ -16,34 +16,35 @@ const FinalLetterScreen = () => {
         transition={{ delay: 0.5, duration: 1.2, ease: "easeOut" }}
       >
         <div className="font-serif text-[#333333] text-center flex flex-col gap-5 text-[15px] leading-relaxed italic">
-          <p className="font-semibold text-lg not-italic">Dear Bubbu,</p>
+          <p className="font-semibold text-lg not-italic">Dear Chulbul pari,</p>
 
           <p>Happy Birthday to someone truly special! 🎂</p>
 
           <p>
-            You are Sweet, Loyal, my cutiepie, and I'm so grateful to have you in my life.
+            Wishing you a day filled with laughter, happiness, delicious cake,
+            and everything that makes you smile.
           </p>
 
           <p>
-            You brought so much warmth and sweetness and believe into my life. Every moment with you was precious.
+            You are full of warmth and sweetness. Every moment spent with you was precious.
           </p>
 
           <p>
-            On your special day, I wish you all the happiness, love, and joy that you deserve. May this year bring you countless beautiful moments and wonderful memories.
+            Some friendships change your life forever. Ours is one of them.
           </p>
 
           <p>
             Here's to celebrating you today and always! 🎉
           </p>
           <p>
-            one more gift is the promise that you will remain the permanent part of my life and will be irreplaceable in my life for the rest of my life.
+            one more gift is the promise that you will remain the permanent friend of my life and will be irreplaceable friend in my life for the rest of my life.
           </p>
 
           <div className="mt-4 flex flex-col items-center">
             <p>With love and best wishes,</p>
-            <p className="font-bold mt-1">Your Special Someone 💝</p>
+            <p className="font-bold mt-1">Your friend 💝</p>
           </div>
-          
+
           <div className="flex justify-end mt-2">
             <span className="text-3xl">🐇🐇</span> {/* Bunnies */}
           </div>
