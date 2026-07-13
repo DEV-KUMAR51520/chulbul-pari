@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import TopDecorations from './TopDecorations';
@@ -7,11 +7,27 @@ const CandleScreen = ({ onNext }) => {
   const [litCandles, setLitCandles] = useState([true, true, true, true, true]);
   const [success, setSuccess] = useState(false);
 
+  const triggerSuccess = () => {
+    setSuccess(true);
+    confetti({
+      particleCount: 150,
+      spread: 80,
+      origin: { y: 0.6 }
+    });
+    setTimeout(() => {
+      onNext();
+    }, 3000);
+  };
+
   const handleBlowIndividual = (idx) => {
     if (success) return;
     setLitCandles((prev) => {
       const next = [...prev];
       next[idx] = false;
+      const remainingLit = next.filter(Boolean).length;
+      if (remainingLit === 0) {
+        triggerSuccess();
+      }
       return next;
     });
   };
@@ -19,24 +35,10 @@ const CandleScreen = ({ onNext }) => {
   const handleBlowAll = () => {
     if (success) return;
     setLitCandles([false, false, false, false, false]);
+    triggerSuccess();
   };
 
   const litCount = litCandles.filter(Boolean).length;
-
-  useEffect(() => {
-    if (litCount === 0 && !success) {
-      setSuccess(true);
-      confetti({
-        particleCount: 150,
-        spread: 80,
-        origin: { y: 0.6 }
-      });
-      const timer = setTimeout(() => {
-        onNext();
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [litCount, success, onNext]);
 
   return (
     <motion.div
@@ -64,21 +66,21 @@ const CandleScreen = ({ onNext }) => {
           {/* Cake Plate */}
           <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-56 h-12 bg-gray-800 rounded-[50%] shadow-[0_10px_20px_rgba(0,0,0,0.5)] border-b-4 border-gray-900" />
           
-          {/* Bottom Tier (Cut slice missing) */}
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-44 h-24 bg-gradient-to-b from-[#2a1b54] to-[#160d33] rounded-[50%] shadow-lg clip-cake-cut">
+          {/* Bottom Tier */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-44 h-24 bg-gradient-to-b from-[#2a1b54] to-[#160d33] rounded-[50%] shadow-lg">
             <div className="absolute top-4 left-4 w-6 h-6 rounded-full bg-white/10 blur-[1px]"></div>
             <div className="absolute bottom-6 right-8 w-4 h-4 rounded-full bg-blue-400/20 blur-[1px]"></div>
             <div className="absolute bottom-4 left-8 text-[10px]">✨</div>
             
-            <div className="absolute top-[-15px] left-0 w-full h-[30px] bg-gradient-to-b from-[#3b2773] to-[#2a1b54] rounded-[50%] clip-cake-cut"></div>
+            <div className="absolute top-[-15px] left-0 w-full h-[30px] bg-gradient-to-b from-[#3b2773] to-[#2a1b54] rounded-[50%]"></div>
           </div>
 
-          {/* Top Tier (Cut slice missing) */}
-          <div className="absolute bottom-20 left-1/2 -translate-x-1/2 w-32 h-20 bg-gradient-to-b from-[#3b2773] to-[#2a1b54] rounded-[50%] shadow-xl clip-cake-cut">
+          {/* Top Tier */}
+          <div className="absolute bottom-20 left-1/2 -translate-x-1/2 w-32 h-20 bg-gradient-to-b from-[#3b2773] to-[#2a1b54] rounded-[50%] shadow-xl">
              <div className="absolute top-3 right-4 w-4 h-4 rounded-full bg-pink-400/20 blur-[1px]"></div>
              <div className="absolute top-6 left-4 text-[10px]">✨</div>
              
-             <div className="absolute top-[-12px] left-0 w-full h-[24px] bg-[#4a348c] rounded-[50%] clip-cake-cut"></div>
+             <div className="absolute top-[-12px] left-0 w-full h-[24px] bg-[#4a348c] rounded-[50%]"></div>
           </div>
 
           {/* Candles */}

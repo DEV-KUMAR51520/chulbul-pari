@@ -12,6 +12,13 @@ const memoryPhotos = [
 
 const MemoryGalleryScreen = ({ onNext, playMusic }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const hasFinished = React.useRef(false);
+
+  const handleNext = () => {
+    if (hasFinished.current) return;
+    hasFinished.current = true;
+    onNext();
+  };
 
   // Start the background music as soon as this screen appears
   useEffect(() => {
@@ -28,7 +35,7 @@ const MemoryGalleryScreen = ({ onNext, playMusic }) => {
           clearInterval(timer);
           // Wait slightly longer on the final photo, then move to the next screen
           setTimeout(() => {
-            onNext();
+            handleNext();
           }, 4500);
           return prev;
         }
@@ -108,7 +115,7 @@ const MemoryGalleryScreen = ({ onNext, playMusic }) => {
 
       {/* Skip button - moved to top right black bar for cinematic cleanliness */}
       <motion.button
-        onClick={onNext}
+        onClick={handleNext}
         className="absolute top-4 right-6 z-30 px-4 py-1 text-white/30 hover:text-white/70 text-xs tracking-widest uppercase transition-colors"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}

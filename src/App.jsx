@@ -46,7 +46,7 @@ function App() {
   const nextStep = () => {
     setStep((prev) => {
       const newStep = prev + 1;
-      if (newStep === 6) {
+      if (newStep === 7) {
         playMusicSong();
       }
       return newStep;
@@ -67,10 +67,10 @@ function App() {
         {step === 1 && <MessageCarousel key="step1" onNext={nextStep} />}
         {step === 2 && <CelebrationScreen key="step2" onNext={nextStep} playMusic={playBirthdaySong} />}
         {step === 3 && <BalloonsScreen key="step3" onNext={nextStep} />}
-        {step === 4 && <CakeScreen key="step4" onNext={nextStep} />}
-        {step === 5 && <MemoriesTransitionScreen key="step5" onNext={nextStep} />}
-        {step === 6 && <MemoryGalleryScreen key="step6" onNext={nextStep} playMusic={playMusicSong} />}
-        {step === 7 && <CandleScreen key="step7" onNext={nextStep} />}
+        {step === 4 && <CandleScreen key="step4" onNext={nextStep} />}
+        {step === 5 && <CakeScreen key="step5" onNext={nextStep} />}
+        {step === 6 && <MemoriesTransitionScreen key="step6" onNext={nextStep} />}
+        {step === 7 && <MemoryGalleryScreen key="step7" onNext={nextStep} playMusic={playMusicSong} />}
         {step === 8 && <EnvelopeScreen key="step8" onNext={nextStep} />}
         {step === 9 && <FinalLetterScreen key="step9" />}
       </AnimatePresence>
