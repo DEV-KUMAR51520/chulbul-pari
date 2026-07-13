@@ -26,7 +26,7 @@ const FinalLetterScreen = () => {
           </p>
 
           <p>
-            You are full of warmth and sweetness. Every moment spent with you was precious.
+            You are full of warmth and sweetness. Every moment spent with you since nevesa is precious and is cherisable.
           </p>
 
           <p>

@@ -35,10 +35,10 @@ const CountdownScreen = ({ targetDate, onComplete }) => {
     return () => clearInterval(timer);
   }, [targetDate, onComplete]);
 
-  // For testing purposes, click the lock icon 30 times to bypass
+  // Click the lock icon 25 times to bypass (>24 times)
   const [clickCount, setClickCount] = useState(0);
   const handleSecretBypass = () => {
-    if (clickCount >= 29) {
+    if (clickCount >= 24) {
       onComplete();
     } else {
       setClickCount(prev => prev + 1);
@@ -71,7 +71,7 @@ const CountdownScreen = ({ targetDate, onComplete }) => {
         </h2>
         
         <p className="text-white/80 mb-8 text-sm md:text-base leading-relaxed">
-          This surprise is locked until your special day on <strong className="text-pink-400">May 12th</strong>. Be patient!
+          This surprise is locked until your special day on <strong className="text-pink-400">August 5th</strong>. Be patient!
         </p>
 
         <div className="flex gap-4 justify-center w-full">

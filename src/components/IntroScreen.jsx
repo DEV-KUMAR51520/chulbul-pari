@@ -22,7 +22,7 @@ const IntroScreen = ({ onNext }) => {
         </div>
         
         <h1 className="text-2xl md:text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pink-300 to-purple-300">
-          I made something special just for you...
+          I tried to make something special just for you...
         </h1>
         
         <p className="text-white/70 mb-8 text-sm">

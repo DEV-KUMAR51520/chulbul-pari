@@ -4,7 +4,7 @@ import { ChevronRight } from 'lucide-react';
 
 const messages = [
   "Happy Birthday, Ayushiiii! 🎂",
-  "Our bond in three words — Sweet, Loyal & My cutiepie 💎",
+  "Our bond in three words was — Sweet, Loyal & My cutiepie 💎",
   "The vibe between us? Sweet & Warm ☀️"
 ];
 

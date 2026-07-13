@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Lightbulb } from 'lucide-react';
 
-const CelebrationScreen = ({ onNext }) => {
+const CelebrationScreen = ({ onNext, playMusic }) => {
   const [lightsOn, setLightsOn] = useState(false);
 
   const handleTurnOnLights = () => {
     setLightsOn(true);
+    if (playMusic) {
+      playMusic();
+    }
     // Play a subtle switch sound here if needed
     setTimeout(() => {
       onNext();

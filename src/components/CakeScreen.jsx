@@ -4,18 +4,19 @@ import TopDecorations from './TopDecorations';
 
 const CakeScreen = ({ onNext }) => {
   const [isCut, setIsCut] = useState(false);
+  const [showContinue, setShowContinue] = useState(false);
 
   const handleCutCake = () => {
     setIsCut(true);
-    // Wait for the cutting animation to finish before moving to the next section
+    // Show continue option after the cutting animation completes (approx 2s)
     setTimeout(() => {
-      onNext();
-    }, 4000);
+      setShowContinue(true);
+    }, 2000);
   };
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-between min-h-screen z-10 w-full relative pb-12 pt-32"
+      className="flex flex-col items-center justify-between min-h-screen z-10 w-full relative pb-8 pt-20 sm:pt-32"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -77,15 +78,36 @@ const CakeScreen = ({ onNext }) => {
         </motion.div>
       </div>
 
+      <AnimatePresence>
+        {isCut && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, y: 15 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ type: "spring", stiffness: 120, damping: 12, delay: 0.8 }}
+            className="text-center px-6 mt-4 mb-2 z-10"
+          >
+            <p className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-300 via-pink-400 to-purple-300 font-serif italic drop-shadow-md">
+              "Ye lo khalo mere taraf se! 🍰✨"
+            </p>
+            <p className="text-xs text-pink-200/70 mt-1 italic font-light">
+              (Virtual feeding with extra love and sweetness! 💝)
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <motion.button
-        className={`w-[85%] max-w-sm py-4 rounded-full text-white font-bold text-lg shadow-[0_4px_15px_rgba(236,72,153,0.4)] transition-all ${
-          isCut ? 'bg-gradient-to-r from-gray-500 to-gray-600 opacity-80 cursor-default' : 'bg-gradient-to-r from-[#e84188] to-[#8b5cf6]'
+        className={`w-[85%] max-w-sm py-4 rounded-full text-white font-bold text-lg shadow-[0_4px_15px_rgba(236,72,153,0.4)] transition-all z-10 ${
+          isCut && !showContinue 
+            ? 'bg-gradient-to-r from-gray-500 to-gray-600 opacity-80 cursor-default' 
+            : 'bg-gradient-to-r from-[#e84188] to-[#8b5cf6]'
         }`}
-        whileHover={!isCut ? { scale: 1.02 } : {}}
-        whileTap={!isCut ? { scale: 0.98 } : {}}
-        onClick={!isCut ? handleCutCake : undefined}
+        whileHover={!isCut || showContinue ? { scale: 1.02 } : {}}
+        whileTap={!isCut || showContinue ? { scale: 0.98 } : {}}
+        onClick={!isCut ? handleCutCake : (showContinue ? onNext : undefined)}
       >
-        {isCut ? 'Cutting... 🔪' : 'Cut the cake'}
+        {isCut ? (showContinue ? 'Continue ➡️' : 'Cutting... 🔪') : 'Cut the cake'}
       </motion.button>
 
       <style>{`
