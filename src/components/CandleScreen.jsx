@@ -1,22 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import confetti from 'canvas-confetti';
 import TopDecorations from './TopDecorations';
 
 const CandleScreen = ({ onNext }) => {
-  const [candlesLit, setCandlesLit] = useState(true);
-  const [blowText, setBlowText] = useState('Blow the Candles');
+  const [litCandles, setLitCandles] = useState([true, true, true, true, true]);
+  const [success, setSuccess] = useState(false);
 
-  const handleBlow = () => {
-    setCandlesLit(false);
-    setBlowText('Yay! 🎉');
-    setTimeout(() => {
-      onNext();
-    }, 2000);
+  const handleBlowIndividual = (idx) => {
+    if (success) return;
+    setLitCandles((prev) => {
+      const next = [...prev];
+      next[idx] = false;
+      return next;
+    });
   };
+
+  const handleBlowAll = () => {
+    if (success) return;
+    setLitCandles([false, false, false, false, false]);
+  };
+
+  const litCount = litCandles.filter(Boolean).length;
+
+  useEffect(() => {
+    if (litCount === 0 && !success) {
+      setSuccess(true);
+      confetti({
+        particleCount: 150,
+        spread: 80,
+        origin: { y: 0.6 }
+      });
+      const timer = setTimeout(() => {
+        onNext();
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [litCount, success, onNext]);
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-between min-h-screen z-10 w-full relative pb-12 pt-32"
+      className="flex flex-col items-center justify-between min-h-screen z-10 w-full relative pb-12 pt-24 select-none"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -24,7 +48,16 @@ const CandleScreen = ({ onNext }) => {
     >
       <TopDecorations showText={true} />
 
-      <div className="relative w-64 h-64 flex items-center justify-center mt-10">
+      <div className="text-center max-w-sm z-20 mt-4">
+        <h2 className="text-2xl md:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-pink-400 to-purple-400 font-serif mb-2">
+          {success ? "You blew them all out! 🥳" : "Tap each candle flame to blow it out! 🕯️"}
+        </h2>
+        <p className="text-white/60 text-sm">
+          {success ? "Make a wish! ✨" : `Candles burning: ${litCount} of 5`}
+        </p>
+      </div>
+
+      <div className="relative w-64 h-64 flex items-center justify-center mt-6">
         <motion.div 
           className="relative perspective-1000 transform-style-3d w-48 h-48"
         >
@@ -49,25 +82,33 @@ const CandleScreen = ({ onNext }) => {
           </div>
 
           {/* Candles */}
-          <div className="absolute bottom-[160px] left-1/2 -translate-x-1/2 flex gap-3 z-10">
-            {[...Array(5)].map((_, i) => (
-              <div key={i} className={`w-1.5 h-8 bg-gray-200 rounded-sm relative ${i === 0 ? 'mt-2' : i === 4 ? 'mt-2' : i === 1 ? 'mt-1' : i === 3 ? 'mt-1' : ''}`}>
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0.5 h-2 bg-gray-400"></div>
+          <div className="absolute bottom-[160px] left-1/2 -translate-x-1/2 flex gap-4 z-10">
+            {litCandles.map((isLit, i) => (
+              <div 
+                key={i} 
+                className={`w-2.5 h-8 bg-gradient-to-t from-pink-300 to-purple-400 rounded-sm relative cursor-pointer ${
+                  i === 0 || i === 4 ? 'mt-2' : i === 1 || i === 3 ? 'mt-1' : ''
+                }`}
+                onClick={() => handleBlowIndividual(i)}
+              >
+                {/* Wick */}
+                <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gray-600"></div>
+                
+                {/* Flame or Smoke */}
                 <AnimatePresence>
-                  {candlesLit && (
+                  {isLit && (
                     <motion.div
-                      className="absolute -top-6 left-1/2 -translate-x-1/2 w-2 h-4 bg-orange-400 rounded-t-full rounded-b-md shadow-[0_0_10px_2px_rgba(251,146,60,0.8)]"
-                      style={{ animation: `flicker ${Math.random() * 0.5 + 1}s infinite alternate` }}
+                      className="absolute -top-6 left-1/2 -translate-x-1/2 w-3.5 h-5 bg-gradient-to-t from-red-500 via-orange-400 to-yellow-300 rounded-t-full rounded-b-md shadow-[0_0_15px_4px_rgba(249,115,22,0.8)]"
+                      style={{ animation: `flicker ${Math.random() * 0.4 + 0.8}s infinite alternate` }}
                       exit={{ opacity: 0, scale: 0, transition: { duration: 0.2 } }}
                     />
                   )}
-                  {!candlesLit && (
+                  {!isLit && (
                     <motion.div
-                      className="absolute -top-8 left-1/2 -translate-x-1/2 w-1 h-6 opacity-50 bg-gray-300 blur-sm rounded-full"
+                      className="absolute -top-8 left-1/2 -translate-x-1/2 w-1.5 h-6 opacity-60 bg-gray-300 blur-[1px] rounded-full"
                       initial={{ y: 0, opacity: 0 }}
-                      animate={{ y: -20, opacity: 0.5, scale: 1.5 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 1.5, ease: "easeOut" }}
+                      animate={{ y: -20, opacity: 0, scale: 1.5 }}
+                      transition={{ duration: 1.2, ease: "easeOut" }}
                     />
                   )}
                 </AnimatePresence>
@@ -79,12 +120,14 @@ const CandleScreen = ({ onNext }) => {
       </div>
 
       <motion.button
-        className="w-[85%] max-w-sm py-4 bg-gradient-to-r from-[#e84188] to-[#8b5cf6] rounded-full text-white font-bold text-lg shadow-[0_4px_15px_rgba(236,72,153,0.4)] transition-transform"
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        onClick={handleBlow}
+        className={`w-[85%] max-w-sm py-4 rounded-full text-white font-bold text-lg shadow-[0_4px_15px_rgba(236,72,153,0.4)] transition-all ${
+          success ? 'bg-gradient-to-r from-gray-500 to-gray-600 cursor-default' : 'bg-gradient-to-r from-[#e84188] to-[#8b5cf6] cursor-pointer'
+        }`}
+        whileHover={!success ? { scale: 1.02 } : {}}
+        whileTap={!success ? { scale: 0.98 } : {}}
+        onClick={handleBlowAll}
       >
-        {blowText}
+        {success ? 'Yay! 🎉' : 'Blow All Candles 🌬️'}
       </motion.button>
 
       <style>{`
